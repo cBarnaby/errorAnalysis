@@ -1,0 +1,36 @@
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def sin(x, N):
+    term = x
+    sinx = x
+    for i in range(2,N):
+        term = -(term*x*x)/(((2*i)-1)*((2*i)-2))
+        sinx = sinx + term
+    return sinx
+
+x = float(input("Enter in an angle in degrees: "))
+if x >= 360:
+    x %= 360
+x *= math.pi/180
+
+logDiff = np.zeros(1000)
+logN = np.zeros(1000)
+z = 0 #declaring a global variable to store the last non-zero value of the for loop below
+
+for i in range (2,1000):
+    if abs(sin(x,i)-sin(x,2+i)) == 0:
+        print("Bork")
+        z=i
+        break
+    logDiff[i] = math.log10(abs(sin(x,i)-sin(x,2*i)))
+    logN[i] = math.log10(i)
+    print(logN[i], " ", logDiff[i])
+
+    
+plt.plot(logN, logDiff,"o", lw=2) #plotted from 1 to z to eliminate (0,0) point
+
+#guess i could've just ran the loop from 2 to 1000
+#oh well
